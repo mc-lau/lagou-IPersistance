@@ -4,6 +4,6 @@
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/lagou?useSSL=false"/>
         <property name="username" value="root"/>
         <property name="password" value="root1234"/>
-        <property name="sqlMapper" value="src/main/resources/UserMapper.xml"/>
+        <property name="sqlMapper" value="IPersistance/src/main/resources/UserMapper.xml"/>
     </dataSource>
 </configuration>

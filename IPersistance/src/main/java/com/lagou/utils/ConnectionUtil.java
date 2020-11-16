@@ -2,7 +2,6 @@ package com.lagou.utils;
 
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,7 +11,7 @@ import java.util.Map;
 
 public class ConnectionUtil {
 
-    private static final String configPath = "src/main/resources/sqlMapConfig.xml";
+    private static final String configPath = "IPersistance/src/main/resources/sqlMapConfig.xml";
 
     public static Connection getConnection() throws DocumentException, SQLException {
         Map<String, String> propertyMap = new HashMap<>();
@@ -24,4 +23,5 @@ public class ConnectionUtil {
         return DriverManager.getConnection(propertyMap.get("jdbcUrl"),propertyMap.get("username"),
                 propertyMap.get("password"));
     }
+
 }

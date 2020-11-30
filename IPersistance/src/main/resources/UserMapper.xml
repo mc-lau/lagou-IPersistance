@@ -1,7 +1,7 @@
-<mapper namespace="user">
+<mapper namespace="com.lagou.dao.UserMapper">
 
     <!--sql的唯一表示：namespace.id组成：statementId -->
-    <select id="selectUser" resultType="com.lagou.pojo.User" parameterType="com.lagou.pojo.User">
+    <select id="getUserListByCondition" resultType="com.lagou.pojo.User" parameterType="com.lagou.pojo.User">
         select * from user where id = ? and username = ?
     </select>
 

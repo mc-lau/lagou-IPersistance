@@ -1,8 +1,13 @@
 package com.lagou.sqlSession;
 
+import com.lagou.pojo.User;
 import com.lagou.utils.ConnectionUtil;
 import com.lagou.utils.XmlAnalyseUtil;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.sql.ResultSet;
+import org.apache.ibatis.session.defaults.DefaultSqlSession;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import java.lang.reflect.Field;
@@ -41,7 +46,7 @@ public class SqlSessionFactory {
         return mapperMap;
     }
 
-    public static <T> T executeSqlSession(String statementId, T param) throws DocumentException, SQLException, IllegalAccessException {
+    public static <T> T executeSqlSession(String statementId, Object param) throws DocumentException, SQLException, IllegalAccessException {
 
         Map<String,Map<String, String>> mapperMap = getSqlSessionMap();
         Map<String,String> sqlSessionMap = mapperMap.get(statementId);
@@ -64,7 +69,31 @@ public class SqlSessionFactory {
             fields[i].set(param,rs.getObject(index));
         }
         connection.close();
-        return param;
+        return (T) param;
+    }
+
+
+    public static <T> T getMapper(Class<?> mapperClass) {
+        //使用JDK动态代理
+
+        Object proxy = Proxy.newProxyInstance(DefaultSqlSession.class.getClassLoader(), new Class[]{mapperClass}, new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+                String className = method.getDeclaringClass().getName();
+                String methodName = method.getName();
+                String statementId = className + "." + methodName;
+                User user = null;
+                try {
+                    user = SqlSessionFactory.executeSqlSession(statementId, args[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return user;
+            }
+        });
+
+        return (T) proxy;
     }
 
 }

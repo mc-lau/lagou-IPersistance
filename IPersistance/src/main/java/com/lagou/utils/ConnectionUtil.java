@@ -1,5 +1,6 @@
 package com.lagou.utils;
 
+
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import java.sql.Connection;
@@ -22,6 +23,6 @@ public class ConnectionUtil {
 
         return DriverManager.getConnection(propertyMap.get("jdbcUrl"),propertyMap.get("username"),
                 propertyMap.get("password"));
-    }
 
+    }
 }
